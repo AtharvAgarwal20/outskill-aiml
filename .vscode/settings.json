@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/chatcompletion/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/chatcompletion/.venv/lib/python3.14/site-packages"
+  ]
+}
