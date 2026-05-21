@@ -1,135 +1,215 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gemini Chatbot</title>
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
   <style>
-    :root {
+    /* ---------- themes ---------- */
+    :root,
+    [data-theme="midnight"] {
       --bg: #0f1115;
+      --bg-grad-1: radial-gradient(1200px 800px at 10% -10%, #1b2140 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #3a1f4d 0%, transparent 55%);
       --panel: #161922;
       --panel-2: #1d2230;
       --text: #e6e8ee;
       --muted: #8a93a6;
       --accent: #6c8cff;
       --accent-2: #8a6cff;
-      --user: #2a3357;
-      --assistant: #1d2230;
+      --user-bg: linear-gradient(180deg, #303a66 0%, #232b50 100%);
+      --assistant-bg: linear-gradient(180deg, #232838 0%, #181c28 100%);
       --border: #262b39;
+      --code-bg: #0b0d13;
+      --shadow: 0 12px 32px rgba(0,0,0,0.35);
+      --hero-grad: linear-gradient(90deg, #a0b4ff, #d1b0ff);
     }
+    [data-theme="sunrise"] {
+      --bg: #fbf6ef;
+      --bg-grad-1: radial-gradient(1100px 700px at 10% -10%, #ffe7c2 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #ffd6e0 0%, transparent 55%);
+      --panel: #ffffff;
+      --panel-2: #fdf3e6;
+      --text: #2a2433;
+      --muted: #7a6f80;
+      --accent: #ff8a3d;
+      --accent-2: #ff5d8f;
+      --user-bg: linear-gradient(180deg, #ffd5b5 0%, #ffc098 100%);
+      --assistant-bg: linear-gradient(180deg, #ffffff 0%, #fbf0e1 100%);
+      --border: #f1d9c0;
+      --code-bg: #fff5ea;
+      --shadow: 0 12px 30px rgba(200, 120, 60, 0.18);
+      --hero-grad: linear-gradient(90deg, #ff8a3d, #ff5d8f);
+    }
+    [data-theme="forest"] {
+      --bg: #0e1612;
+      --bg-grad-1: radial-gradient(1100px 700px at 10% -10%, #143527 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #1b3a2a 0%, transparent 55%);
+      --panel: #16201b;
+      --panel-2: #1c2a23;
+      --text: #e2ecd9;
+      --muted: #8aa395;
+      --accent: #4cc38a;
+      --accent-2: #9bd96b;
+      --user-bg: linear-gradient(180deg, #244c39 0%, #1a3a2b 100%);
+      --assistant-bg: linear-gradient(180deg, #1d2a23 0%, #14201a 100%);
+      --border: #25372d;
+      --code-bg: #0b1410;
+      --shadow: 0 12px 32px rgba(0,0,0,0.35);
+      --hero-grad: linear-gradient(90deg, #9bd96b, #4cc38a);
+    }
+    [data-theme="rose"] {
+      --bg: #fff5f7;
+      --bg-grad-1: radial-gradient(1100px 700px at 10% -10%, #ffe1ec 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #f5d8ff 0%, transparent 55%);
+      --panel: #ffffff;
+      --panel-2: #fdf2f6;
+      --text: #3a2a35;
+      --muted: #8a7682;
+      --accent: #e35d8a;
+      --accent-2: #b86cd1;
+      --user-bg: linear-gradient(180deg, #ffd1de 0%, #ffb6cc 100%);
+      --assistant-bg: linear-gradient(180deg, #ffffff 0%, #fbecf2 100%);
+      --border: #f3d5e0;
+      --code-bg: #fff0f5;
+      --shadow: 0 12px 30px rgba(190, 80, 130, 0.18);
+      --hero-grad: linear-gradient(90deg, #e35d8a, #b86cd1);
+    }
+    [data-theme="mono"] {
+      --bg: #101013;
+      --bg-grad-1: radial-gradient(1100px 700px at 10% -10%, #1d1d22 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #25252b 0%, transparent 55%);
+      --panel: #18181c;
+      --panel-2: #202024;
+      --text: #ececef;
+      --muted: #8d8d96;
+      --accent: #d0d0d6;
+      --accent-2: #a0a0a8;
+      --user-bg: linear-gradient(180deg, #2e2e34 0%, #232328 100%);
+      --assistant-bg: linear-gradient(180deg, #1d1d22 0%, #16161a 100%);
+      --border: #2a2a30;
+      --code-bg: #0c0c0f;
+      --shadow: 0 12px 32px rgba(0,0,0,0.35);
+      --hero-grad: linear-gradient(90deg, #ffffff, #b0b0b8);
+    }
+    [data-theme="ocean"] {
+      --bg: #08131a;
+      --bg-grad-1: radial-gradient(1100px 700px at 10% -10%, #0d2a40 0%, transparent 60%);
+      --bg-grad-2: radial-gradient(900px 700px at 110% 10%, #144055 0%, transparent 55%);
+      --panel: #0f1f2a;
+      --panel-2: #142a38;
+      --text: #dbeaf2;
+      --muted: #7a96a8;
+      --accent: #38b6e6;
+      --accent-2: #2ad6c5;
+      --user-bg: linear-gradient(180deg, #134f6b 0%, #0e3b51 100%);
+      --assistant-bg: linear-gradient(180deg, #142a38 0%, #0c1e29 100%);
+      --border: #1d3848;
+      --code-bg: #07131a;
+      --shadow: 0 12px 32px rgba(0,0,0,0.35);
+      --hero-grad: linear-gradient(90deg, #38b6e6, #2ad6c5);
+    }
+
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; overflow: hidden; }
+    html, body { height: 100%; margin: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background:
-        radial-gradient(1200px 800px at 10% -10%, #1b2140 0%, transparent 60%),
-        radial-gradient(900px 700px at 110% 10%, #3a1f4d 0%, transparent 55%),
-        var(--bg);
+      background: var(--bg-grad-1), var(--bg-grad-2), var(--bg);
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background-color 200ms ease, color 200ms ease;
     }
-
-    #scene-root {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-    }
-    #gl {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    #css3d {
-      position: absolute;
-      inset: 0;
-    }
-
     header {
       padding: 14px 20px;
       border-bottom: 1px solid var(--border);
-      background: rgba(15, 17, 21, 0.55);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 75%, transparent);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 20;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 0.2px; }
     .logo {
       width: 28px; height: 28px; border-radius: 8px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 6px 20px rgba(108, 140, 255, 0.45);
+      box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent);
     }
     .meta { color: var(--muted); font-size: 12px; }
+
+    .theme-picker {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .theme-picker select {
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+    }
+    .theme-picker select:focus { border-color: var(--accent); }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 18px 16px 140px;
+    }
 
     .msg {
       display: flex;
       gap: 12px;
-      width: 560px;
-      animation: pop 240ms ease-out;
+      margin: 14px 0;
+      animation: pop 180ms ease-out;
     }
     .msg.user { flex-direction: row-reverse; }
     @keyframes pop {
-      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: none; }
     }
     .avatar {
-      width: 34px; height: 34px; border-radius: 50%;
-      flex: 0 0 34px;
+      width: 30px; height: 30px; border-radius: 50%;
+      flex: 0 0 30px;
       display: grid; place-items: center;
       font-size: 13px; font-weight: 700;
       color: white;
       align-self: flex-end;
-      box-shadow:
-        0 8px 22px rgba(0,0,0,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.25),
-        inset 0 -2px 6px rgba(0,0,0,0.35);
     }
-    .avatar.user { background: linear-gradient(135deg, #6c8cff, #4a6cf7); }
-    .avatar.assistant { background: linear-gradient(135deg, #8a6cff, #c86cff); }
+    .avatar.user { background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+    .avatar.assistant { background: linear-gradient(135deg, var(--accent-2), var(--accent)); }
     .bubble {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
       line-height: 1.5;
-      max-width: 100%;
+      max-width: 72%;
       word-wrap: break-word;
       overflow-wrap: anywhere;
-      box-shadow:
-        0 26px 60px rgba(0,0,0,0.55),
-        0 8px 18px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      box-shadow: var(--shadow);
     }
     .msg.user .bubble {
-      background: linear-gradient(180deg, #303a66 0%, #232b50 100%);
+      background: var(--user-bg);
       border-radius: 18px 18px 4px 18px;
     }
     .msg.assistant .bubble {
-      background: linear-gradient(180deg, #232838 0%, #181c28 100%);
+      background: var(--assistant-bg);
       border-radius: 18px 18px 18px 4px;
     }
     .bubble pre {
-      background: #0b0d13;
+      background: var(--code-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 10px 12px;
@@ -137,7 +217,7 @@
       margin: 8px 0;
     }
     .bubble code {
-      background: #0b0d13;
+      background: var(--code-bg);
       padding: 1px 6px;
       border-radius: 4px;
       font-size: 0.9em;
@@ -156,24 +236,14 @@
       0%, 80%, 100% { opacity: 0.2; }
       40% { opacity: 1; }
     }
-
     .empty {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       text-align: center;
       color: var(--muted);
-      z-index: 5;
-      padding: 0 16px;
-      pointer-events: none;
+      margin-top: 22vh;
     }
-    .empty > * { pointer-events: auto; }
     .empty h1 {
-      font-size: 32px; margin: 8px 0 6px;
-      background: linear-gradient(90deg, #a0b4ff, #d1b0ff);
+      font-size: 28px; margin: 8px 0 6px; color: var(--text);
+      background: var(--hero-grad);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -183,46 +253,39 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 10px;
       margin-top: 24px;
-      max-width: 720px;
-      width: 100%;
     }
     .example {
       border: 1px solid var(--border);
-      background: rgba(22, 25, 34, 0.7);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: var(--panel);
       padding: 12px 14px;
       border-radius: 10px;
       cursor: pointer;
       text-align: left;
       color: var(--text);
       transition: border-color 120ms, transform 120ms;
+      font: inherit;
     }
     .example:hover {
       border-color: var(--accent);
       transform: translateY(-1px);
     }
-
     footer {
       position: fixed;
       left: 0; right: 0; bottom: 0;
-      background: linear-gradient(to top, rgba(15,17,21,0.92) 55%, rgba(15,17,21,0));
+      background: linear-gradient(to top, var(--bg) 60%, color-mix(in srgb, var(--bg) 0%, transparent));
       padding: 16px;
-      z-index: 20;
     }
     .composer {
       max-width: 860px;
       margin: 0 auto;
-      background: rgba(22, 25, 34, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 10px;
       display: flex;
       gap: 8px;
       align-items: end;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
     }
     textarea {
       flex: 1;
@@ -245,7 +308,6 @@
       color: white;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       transition: transform 80ms, opacity 120ms;
-      box-shadow: 0 8px 20px rgba(108, 140, 255, 0.4);
     }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn:active { transform: translateY(1px); }
@@ -253,18 +315,12 @@
       background: transparent;
       color: var(--muted);
       border: 1px solid var(--border);
-      box-shadow: none;
     }
-    .row { display: flex; gap: 8px; }
+    .row { display: flex; gap: 8px; align-items: center; }
     .hint { color: var(--muted); font-size: 12px; text-align: center; margin-top: 6px; }
   </style>
 </head>
 <body>
-  <div id="scene-root">
-    <canvas id="gl"></canvas>
-    <div id="css3d"></div>
-  </div>
-
   <header>
     <div class="brand">
       <div class="logo"></div>
@@ -272,238 +328,73 @@
     </div>
     <div class="row">
       <div class="meta">model: <span id="model">{{ model }}</span></div>
+      <div class="theme-picker">
+        <label for="theme">theme</label>
+        <select id="theme">
+          <option value="midnight">Midnight</option>
+          <option value="sunrise">Sunrise</option>
+          <option value="forest">Forest</option>
+          <option value="rose">Rosé</option>
+          <option value="ocean">Ocean</option>
+          <option value="mono">Mono</option>
+        </select>
+      </div>
       <button class="btn ghost" id="clear" title="Clear chat">Clear</button>
     </div>
   </header>
 
-  <div id="empty" class="empty">
-    <h1>How can I help you today?</h1>
-    <div>Ask anything — code, ideas, explanations, brainstorming.</div>
-    <div class="examples">
-      <button class="example">Explain async/await in JavaScript with an example.</button>
-      <button class="example">Write a Python function to flatten a nested list.</button>
-      <button class="example">Suggest 5 healthy weeknight dinner ideas.</button>
-      <button class="example">Summarize the difference between TCP and UDP.</button>
+  <main id="main">
+    <div id="empty" class="empty">
+      <h1>How can I help you today?</h1>
+      <div>Ask anything — code, ideas, explanations, brainstorming.</div>
+      <div class="examples">
+        <button class="example">Explain async/await in JavaScript with an example.</button>
+        <button class="example">Write a Python function to flatten a nested list.</button>
+        <button class="example">Suggest 5 healthy weeknight dinner ideas.</button>
+        <button class="example">Summarize the difference between TCP and UDP.</button>
+      </div>
     </div>
-  </div>
+    <div id="messages"></div>
+  </main>
 
   <footer>
     <form id="composer" class="composer">
       <textarea id="input" rows="1" placeholder="Send a message…  (Enter to send, Shift+Enter for newline)"></textarea>
       <button id="send" class="btn" type="submit">Send</button>
     </form>
-    <div class="hint">Press <b>Enter</b> to send · <b>Shift+Enter</b> for a new line · Drag the scene to rotate</div>
+    <div class="hint">Press <b>Enter</b> to send · <b>Shift+Enter</b> for a new line</div>
   </footer>
 
-  <script type="module">
-    import * as THREE from 'three';
-    import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+  <script>
+    const messagesEl = document.getElementById('messages');
     const emptyEl = document.getElementById('empty');
     const input = document.getElementById('input');
     const sendBtn = document.getElementById('send');
     const composer = document.getElementById('composer');
     const clearBtn = document.getElementById('clear');
-    const glCanvas = document.getElementById('gl');
-    const css3dMount = document.getElementById('css3d');
+    const themeSelect = document.getElementById('theme');
 
     const history = [];
 
-    /* ---------------- three.js scene ---------------- */
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0f1115, 900, 2800);
-
-    const camera = new THREE.PerspectiveCamera(
-      55, window.innerWidth / window.innerHeight, 1, 5000
-    );
-    camera.position.set(0, 0, 720);
-
-    scene.add(new THREE.AmbientLight(0x556080, 0.7));
-    const keyLight = new THREE.DirectionalLight(0xb6c4ff, 0.9);
-    keyLight.position.set(300, 500, 600);
-    scene.add(keyLight);
-    const accent1 = new THREE.PointLight(0xc86cff, 1.6, 2400);
-    accent1.position.set(-500, 200, 400);
-    scene.add(accent1);
-    const accent2 = new THREE.PointLight(0x6c8cff, 1.4, 2400);
-    accent2.position.set(500, -100, 400);
-    scene.add(accent2);
-
-    const PARTICLES = 900;
-    const positions = new Float32Array(PARTICLES * 3);
-    for (let i = 0; i < PARTICLES; i++) {
-      positions[i*3+0] = (Math.random() - 0.5) * 3200;
-      positions[i*3+1] = (Math.random() - 0.5) * 3200;
-      positions[i*3+2] = (Math.random() - 0.5) * 1800 - 400;
-    }
-    const pGeo = new THREE.BufferGeometry();
-    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const pMat = new THREE.PointsMaterial({
-      color: 0xa0b4ff,
-      size: 2.4,
-      sizeAttenuation: true,
-      transparent: true,
-      opacity: 0.55,
-      depthWrite: false,
-    });
-    const particles = new THREE.Points(pGeo, pMat);
-    scene.add(particles);
-
-    const skyGeo = new THREE.SphereGeometry(2400, 32, 32);
-    const skyMat = new THREE.ShaderMaterial({
-      uniforms: {
-        topColor: { value: new THREE.Color(0x1b2140) },
-        bottomColor: { value: new THREE.Color(0x3a1f4d) },
-      },
-      vertexShader: `
-        varying vec3 vWorld;
-        void main() {
-          vWorld = (modelMatrix * vec4(position, 1.0)).xyz;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vWorld;
-        uniform vec3 topColor;
-        uniform vec3 bottomColor;
-        void main() {
-          float h = clamp(normalize(vWorld).y * 0.5 + 0.5, 0.0, 1.0);
-          gl_FragColor = vec4(mix(bottomColor, topColor, h), 1.0);
-        }
-      `,
-      side: THREE.BackSide,
-      depthWrite: false,
-    });
-    const sky = new THREE.Mesh(skyGeo, skyMat);
-    scene.add(sky);
-
-    const glRenderer = new THREE.WebGLRenderer({
-      canvas: glCanvas, antialias: true, alpha: true,
-    });
-    glRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    glRenderer.setSize(window.innerWidth, window.innerHeight);
-    glRenderer.setClearColor(0x000000, 0);
-
-    const cssScene = new THREE.Scene();
-    const cssRenderer = new CSS3DRenderer();
-    cssRenderer.setSize(window.innerWidth, window.innerHeight);
-    cssRenderer.domElement.style.position = 'absolute';
-    cssRenderer.domElement.style.top = '0';
-    cssRenderer.domElement.style.left = '0';
-    css3dMount.appendChild(cssRenderer.domElement);
-
-    const controls = new OrbitControls(camera, cssRenderer.domElement);
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    const POLAR = Math.PI / 2;
-    controls.minPolarAngle = POLAR - 0.18;
-    controls.maxPolarAngle = POLAR + 0.18;
-    controls.minAzimuthAngle = -0.40;
-    controls.maxAzimuthAngle = 0.40;
-    controls.target.set(0, 0, 0);
-
-    /* ---------------- message placement ---------------- */
-    const sceneObjects = [];
-    const SLOT = 230;
-    let nextY = 0;
-    let targetCamY = 0;
-
-    function renderMarkdown(text) {
-      const esc = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      let out = esc.replace(/```([\w+-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
-        return `<pre><code>${code.replace(/\n$/, '')}</code></pre>`;
-      });
-      out = out.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      out = out.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?]|$)/g, '$1<em>$2</em>');
-      out = out
-        .split(/\n{2,}/)
-        .map(b => b.startsWith('<pre>') ? b : `<p>${b.replace(/\n/g, '<br>')}</p>`)
-        .join('');
-      return out;
-    }
-
-    function addMessage(role, content) {
-      emptyEl.style.display = 'none';
-      const wrap = document.createElement('div');
-      wrap.className = `msg ${role}`;
-      const avatar = document.createElement('div');
-      avatar.className = `avatar ${role}`;
-      avatar.textContent = role === 'user' ? 'U' : 'G';
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.innerHTML = renderMarkdown(content || '');
-      wrap.appendChild(avatar);
-      wrap.appendChild(bubble);
-
-      const obj = new CSS3DObject(wrap);
-      const xOff = role === 'user' ? 240 : -240;
-      const yRot = role === 'user' ? -0.20 : 0.20;
-      const zJitter = (Math.random() - 0.5) * 50;
-      obj.position.set(xOff, nextY, zJitter);
-      obj.rotation.y = yRot;
-      cssScene.add(obj);
-      sceneObjects.push(obj);
-
-      nextY -= SLOT;
-      targetCamY = nextY + SLOT * 0.6;
-      return bubble;
-    }
-
-    function clearAll() {
-      for (const obj of sceneObjects) {
-        cssScene.remove(obj);
-        const el = obj.element;
-        if (el && el.parentNode) el.parentNode.removeChild(el);
-      }
-      sceneObjects.length = 0;
-      nextY = 0;
-      targetCamY = 0;
-      emptyEl.style.display = '';
-    }
-
-    /* ---------------- animation loop ---------------- */
-    const clock = new THREE.Clock();
-    function animate() {
-      requestAnimationFrame(animate);
-      const dt = Math.min(clock.getDelta(), 0.05);
-
-      const k = 1 - Math.pow(0.001, dt);
-      camera.position.y += (targetCamY - camera.position.y) * k;
-      controls.target.y += (targetCamY - controls.target.y) * k;
-
-      particles.rotation.y += dt * 0.02;
-      particles.rotation.x += dt * 0.008;
-
-      const t = performance.now();
-      accent1.position.x = -500 + Math.sin(t * 0.0006) * 80;
-      accent2.position.x =  500 + Math.cos(t * 0.0005) * 80;
-
-      controls.update();
-      glRenderer.render(scene, camera);
-      cssRenderer.render(cssScene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      glRenderer.setSize(window.innerWidth, window.innerHeight);
-      cssRenderer.setSize(window.innerWidth, window.innerHeight);
+    /* ---------- theme ---------- */
+    const THEMES = ['midnight', 'sunrise', 'forest', 'rose', 'ocean', 'mono'];
+    const savedTheme = localStorage.getItem('chat-theme');
+    const initialTheme = THEMES.includes(savedTheme) ? savedTheme : 'midnight';
+    document.documentElement.setAttribute('data-theme', initialTheme);
+    themeSelect.value = initialTheme;
+    themeSelect.addEventListener('change', () => {
+      const t = themeSelect.value;
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('chat-theme', t);
     });
 
-    /* ---------------- composer + chat ---------------- */
+    /* ---------- composer ---------- */
     function autosize() {
       input.style.height = 'auto';
       input.style.height = Math.min(input.scrollHeight, 160) + 'px';
     }
     input.addEventListener('input', autosize);
+
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -521,8 +412,44 @@
 
     clearBtn.addEventListener('click', () => {
       history.length = 0;
-      clearAll();
+      messagesEl.innerHTML = '';
+      emptyEl.style.display = '';
     });
+
+    function renderMarkdown(text) {
+      const esc = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      let out = esc.replace(/```([\w+-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+        return `<pre><code>${code.replace(/\n$/, '')}</code></pre>`;
+      });
+      out = out.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?]|$)/g, '$1<em>$2</em>');
+      out = out
+        .split(/\n{2,}/)
+        .map(block => block.startsWith('<pre>') ? block : `<p>${block.replace(/\n/g, '<br>')}</p>`)
+        .join('');
+      return out;
+    }
+
+    function addMessage(role, content) {
+      emptyEl.style.display = 'none';
+      const wrap = document.createElement('div');
+      wrap.className = `msg ${role}`;
+      const avatar = document.createElement('div');
+      avatar.className = `avatar ${role}`;
+      avatar.textContent = role === 'user' ? 'U' : 'G';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.innerHTML = renderMarkdown(content);
+      wrap.appendChild(avatar);
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      return bubble;
+    }
 
     async function send(userText) {
       history.push({ role: 'user', content: userText });
@@ -568,6 +495,7 @@
                 if (first) { bubble.innerHTML = ''; first = false; }
                 assistantText += obj.token;
                 bubble.innerHTML = renderMarkdown(assistantText);
+                window.scrollTo({ top: document.body.scrollHeight });
               } else if (obj.error) {
                 bubble.innerHTML = `<em>Error: ${obj.error}</em>`;
               }
